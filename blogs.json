@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "title": "First Blog",
+    "content": "This is the first blog Lorem ipsumdolor sit amet, consectetur adipiscing elit.",
+    "author": "John Doe",
+    "createdAt": "2019-01-01T00:00:00.000Z",
+    "updatedAt": "2019-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "title": "Binance Krosopka",
+    "content": "Shampan Zhao Binance Lorem ipsumdolor sit amet, consectetur adipiscing elit.",
+    "author": "John Lenon",
+    "createdAt": "2019-01-01T00:00:00.000Z",
+    "updatedAt": "2019-01-01T00:00:00.000Z"
+  }
+]

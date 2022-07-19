@@ -1,0 +1,1 @@
+import { getAllBlogs } from "./service";
