@@ -31,7 +31,7 @@ export const updateBlog = async (blog: Blog): Promise<Blog> => {
   return blog;
 };
 
-export const deleteBlog = async (id: number): Promise<Blog> => {
+export const deleteBlog = async (id: string): Promise<Blog> => {
   const blogs = await readFile("./blogs.json", { encoding: "utf8" });
   // const blogsArray = JSON.parse(blogs).filter((blog) => blog.id !== id); //in case we do not need display deleted blog
   const blogsArray = JSON.parse(blogs);
