@@ -1,4 +1,4 @@
-import { ServerResponse } from "http";
+import { IncomingMessage, ServerResponse } from "http";
 import * as blogService from "./service";
 import { Blog } from "./interface";
 
@@ -20,7 +20,7 @@ export const getByIdController = async (res: ServerResponse, id: string) => {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*"
     }) &&
-    res.end("Sorry\nCould not found blog with such id");
+    res.end(`Sorry\nCould not found blog with ${id}`);
 };
 
 export const createController = async (res: ServerResponse, blog: Blog) => {
@@ -32,13 +32,26 @@ export const createController = async (res: ServerResponse, blog: Blog) => {
   res.end(JSON.stringify(newBlog));
 };
 
-export const updateController = async (res: ServerResponse, blog: Blog) => {
-  res.writeHead(200, {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*"
-  });
-  const updatedBlog = await blogService.updateBlog(blog);
-  res.end(JSON.stringify(updatedBlog));
+export const updateController = async (
+  res: ServerResponse,
+  blog: Blog,
+  id: string
+) => {
+  const blogById = await blogService.getBlogById(id);
+  if (blogById) {
+    res.writeHead(200, {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    });
+    const updatedBlog = await blogService.updateBlog(blog, blogById.id);
+    res.end(JSON.stringify(updatedBlog));
+  } else {
+    res.writeHead(404, {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    });
+    res.end(JSON.stringify({ error: `BLog with id: ${id} was not found` }));
+  }
 };
 
 export const deleteController = async (res: ServerResponse, id: string) => {
