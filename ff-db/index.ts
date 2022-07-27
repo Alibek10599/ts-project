@@ -1,17 +1,4 @@
-// interface FlatFileDbOptions {
-//   path: string;
-//   fileName: string;
-//   fileExtension: string;
-//   fileEncoding: string;
-//   fileDelimiter: string;
-//   fileHeader: string;
-//   fileFooter: string;
-//   fileHeaderDelimiter: string;
-//   fileFooterDelimiter: string;
-//   fileHeaderRowCount: number;
-// }
-
-interface Record<T> {
+export interface Record<T> {
   id: string;
   data: T;
 

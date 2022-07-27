@@ -8,7 +8,10 @@
     "start": "npx ts-node index.ts",
     "build": "npx tsc",
     "build:watch": "npx tsc --watch",
-    "lint": "npx tslint --project \"./tsconfig.json\""
+    "lint": "npx tslint --project \"./tsconfig.json\"",
+    "postversion": "git push && git push --tags",
+    "prepublishOnly": "npm run ci",
+    "preversion": "npm run ci"
   },
   "keywords": [],
   "author": "Alibek",
