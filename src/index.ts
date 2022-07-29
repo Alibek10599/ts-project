@@ -1,52 +1,41 @@
-import { createServer, RequestListener } from 'http';
-import { getRequestBlog } from './getRequestedItem';
-import {
-  getAllController,
-  getByIdController,
-  createController,
-  updateController,
-  deleteController
-} from './controller';
+import { createServer } from 'http';
+import BlogController from './controller';
+import { FlatFileDb, Record } from 'ff-db-liba';
+import * as path from 'path';
+import { Blog } from 'interface';
 
-const requestListener: RequestListener = async (req, res) => {
-  switch (true) {
-    case req.url === '/blog' && req.method === 'GET':
-      await getAllController(res);
-      break;
-    case req.url === '/blog' && req.method === 'POST':
-      {
-        const requestBlog = await getRequestBlog(req);
-        await createController(res, requestBlog);
-      }
-      break;
-    case req.url.match(/\/blog\/([0-9]+)/) && req.method === 'GET':
-      {
-        const id = req.url.split('/')[2];
-        await getByIdController(res, id);
-      }
-      break;
-    case req.url.match(/\/blog\/([0-9]+)/) && req.method === 'PUT':
-      {
-        const id = req.url.split('/')[2];
-        const requestBlog = await getRequestBlog(req);
-        await updateController(res, requestBlog, id);
-      }
-      break;
-    case req.url.match(/\/blog\/([0-9]+)/) && req.method === 'DELETE':
-      {
-        const id = req.url.split('/')[2];
-        await deleteController(res, id);
-      }
-      break;
-    default:
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('404 Not found\nGulyai Vasya');
-      break;
+const inputPath = path.join(__dirname, '../blogs.json');
+const flatFileService = new FlatFileDb(inputPath);
+const controller = new BlogController(flatFileService);
+
+const blog: Record<Blog> = {
+  id: '5',
+  data: {
+    id: '5',
+    title: 'Fifth Blog',
+    content:
+      'This is the fifth blog Lorem ipsumdolor sit amet, consectetur adipiscing elit.',
+    author: 'John Lennon',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  toJSON: () => {
+    return {
+      id: '5',
+      title: 'Fifth Blog',
+      content:
+        'This is the fifth blog Lorem ipsumdolor sit amet, consectetur adipiscing elit.',
+      author: 'John Lennon',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
   }
-
-  res.on('error', (err) => {
-    console.error(err);
-  });
 };
+
 console.log('Server running at http://localhost:8080/');
-createServer(requestListener).listen(8080);
+console.log(
+  flatFileService.deleteRecord('2').then(() => {
+    console.log('records');
+  })
+);
+createServer(controller.handleRequest).listen(8080);
